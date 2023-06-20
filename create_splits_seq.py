@@ -12,7 +12,20 @@ parser.add_argument('--seed', type=int, default=1,
                     help='random seed (default: 1)')
 parser.add_argument('--k', type=int, default=10,
                     help='number of splits (default: 10)')
-parser.add_argument('--task', type=str, choices=['task_1_tumor_vs_normal', 'task_2_tumor_subtyping'])
+parser.add_argument('--task', type=str, choices=[
+    'task_1_tumor_vs_normal',  
+    'task_2_tumor_subtyping', 
+    'pbrm1_classification_wsi', 
+    'pbrm1_classification_wsi_test', 
+    'pbrm1_classification_txr',
+    'pbrm1_classification_tcga',
+    'bap1_classification_wsi', 
+    'bap1_classification_txr',
+    'bap1_classification_tcga',
+    'setd2_classification_wsi', 
+    'setd2_classification_txr',
+    'setd2_classification_tcga',
+    ])
 parser.add_argument('--val_frac', type=float, default= 0.1,
                     help='fraction of labels for validation (default: 0.1)')
 parser.add_argument('--test_frac', type=float, default= 0.1,
@@ -29,7 +42,7 @@ if args.task == 'task_1_tumor_vs_normal':
                             label_dict = {'normal_tissue':0, 'tumor_tissue':1},
                             patient_strat=True,
                             ignore=[])
-
+    
 elif args.task == 'task_2_tumor_subtyping':
     args.n_classes=3
     dataset = Generic_WSI_Classification_Dataset(csv_path = 'dataset_csv/tumor_subtyping_dummy_clean.csv',
@@ -40,6 +53,116 @@ elif args.task == 'task_2_tumor_subtyping':
                             patient_strat= True,
                             patient_voting='maj',
                             ignore=[])
+
+elif args.task == 'pbrm1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/wsi_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='PBRM1')
+
+elif args.task == 'pbrm1_classification_wsi_test':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/wsi_labels_test.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='PBRM1')
+    
+elif args.task == 'pbrm1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/txr_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='PBRM1')
+
+elif args.task == 'pbrm1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/tcga_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='PBRM1')
+    
+elif args.task == 'bap1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/wsi_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='BAP1')
+    
+elif args.task == 'bap1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/txr_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='BAP1')
+
+elif args.task == 'bap1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/tcga_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='BAP1')
+    
+elif args.task == 'setd2_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/wsi_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='SETD2')
+    
+elif args.task == 'setd2_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/txr_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='SETD2')
+
+elif args.task == 'setd2_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_WSI_Classification_Dataset(csv_path='dataset_csv/tcga_labels.csv',
+                                                 shuffle=False,
+                                                 seed=args.seed,
+                                                 print_info=True,
+                                                 label_dict={'False': 0, 'True': 1},
+                                                 patient_strat=True,
+                                                 ignore=[],
+                                                 label_col='SETD2')
 
 else:
     raise NotImplementedError
