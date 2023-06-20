@@ -97,7 +97,20 @@ parser.add_argument('--model_type', type=str, choices=['clam_sb', 'clam_mb', 'mi
 parser.add_argument('--exp_code', type=str, help='experiment code for saving results')
 parser.add_argument('--weighted_sample', action='store_true', default=False, help='enable weighted sampling')
 parser.add_argument('--model_size', type=str, choices=['small', 'big'], default='small', help='size of model, does not affect mil')
-parser.add_argument('--task', type=str, choices=['task_1_tumor_vs_normal',  'task_2_tumor_subtyping'])
+parser.add_argument('--task', type=str, choices=[
+    'task_1_tumor_vs_normal',  
+    'task_2_tumor_subtyping', 
+    'pbrm1_classification_wsi', 
+    'pbrm1_classification_txr',
+    'pbrm1_classification_tcga',
+    'bap1_classification_wsi', 
+    'bap1_classification_txr',
+    'bap1_classification_tcga',
+    'setd2_classification_wsi', 
+    'setd2_classification_txr',
+    'setd2_classification_tcga',
+    ])
+parser.add_argument('--dataset', type=str, default=None)
 ### CLAM specific options
 parser.add_argument('--no_inst_cluster', action='store_true', default=False,
                      help='disable instance-level clustering')
@@ -175,6 +188,114 @@ elif args.task == 'task_2_tumor_subtyping':
 
     if args.model_type in ['clam_sb', 'clam_mb']:
         assert args.subtyping 
+
+elif args.task == 'pbrm1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'pbrm1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'pbrm1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            seed = args.seed, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
         
 else:
     raise NotImplementedError
