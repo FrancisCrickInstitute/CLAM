@@ -41,7 +41,20 @@ parser.add_argument('--fold', type=int, default=-1, help='single fold to evaluat
 parser.add_argument('--micro_average', action='store_true', default=False, 
                     help='use micro_average instead of macro_avearge for multiclass AUC')
 parser.add_argument('--split', type=str, choices=['train', 'val', 'test', 'all'], default='test')
-parser.add_argument('--task', type=str, choices=['task_1_tumor_vs_normal',  'task_2_tumor_subtyping'])
+parser.add_argument('--task', type=str, choices=[
+    'task_1_tumor_vs_normal',  
+    'task_2_tumor_subtyping', 
+    'pbrm1_classification_wsi', 
+    'pbrm1_classification_txr',
+    'pbrm1_classification_tcga',
+    'bap1_classification_wsi', 
+    'bap1_classification_txr',
+    'bap1_classification_tcga',
+    'setd2_classification_wsi', 
+    'setd2_classification_txr',
+    'setd2_classification_tcga',
+    ])
+parser.add_argument('--dataset', type=str, default=None)
 args = parser.parse_args()
 
 device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -89,16 +102,104 @@ elif args.task == 'task_2_tumor_subtyping':
                             label_dict = {'subtype_1':0, 'subtype_2':1, 'subtype_3':2},
                             patient_strat= False,
                             ignore=[])
-
-# elif args.task == 'tcga_kidney_cv':
-#     args.n_classes=3
-#     dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_kidney_clean.csv',
-#                             data_dir= os.path.join(args.data_root_dir, 'tcga_kidney_20x_features'),
-#                             shuffle = False, 
-#                             print_info = True,
-#                             label_dict = {'TCGA-KICH':0, 'TCGA-KIRC':1, 'TCGA-KIRP':2},
-#                             patient_strat= False,
-#                             ignore=['TCGA-SARC'])
+elif args.task == 'pbrm1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'pbrm1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'pbrm1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='PBRM1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'bap1_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='BAP1',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_wsi':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/wsi_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_txr':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/txr_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
+    
+elif args.task == 'setd2_classification_tcga':
+    args.n_classes = 2
+    dataset = Generic_MIL_Dataset(csv_path = 'dataset_csv/tcga_labels.csv',
+                            data_dir= os.path.join(args.data_root_dir, args.dataset),
+                            shuffle = False, 
+                            print_info = True,
+                            label_dict = {'False':0, 'True':1},
+                            patient_strat=False,
+                            label_col='SETD2',
+                            ignore=[])
 
 else:
     raise NotImplementedError
